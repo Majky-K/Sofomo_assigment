@@ -13,7 +13,6 @@ def find_all(db: Session):
 
 def find_one_by_ip(db: Session, ip: str):
     query_result = db.query(GeoLocation).filter_by(ip=ip).first()
-    print(db.query(GeoLocation).filter_by(ip="1.1.1.1"))
     return get_response_or_404(query_result)
 
 

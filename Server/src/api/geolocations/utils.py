@@ -26,7 +26,6 @@ def get_response_or_404(query_result: GeoLocation | None):
 def obtain_geolocation_info(
     data: CreateGeolocationDto, settings: Settings = Depends(get_settings)
 ):
-    print(settings.ip_api_key, settings.testing)
     uri = (
         data.__root__.value.host
         if isinstance(data.__root__.value, HttpUrl)

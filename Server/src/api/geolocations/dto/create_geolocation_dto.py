@@ -16,3 +16,11 @@ class CreateGeolocationDto(BaseModel):
     __root__: CreateGeolocationIpDto | CreateGeolocationUrlDto = Field(
         ..., discriminator="type"
     )
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "type": "ip or url",
+                "value": "string"
+            }
+        }
