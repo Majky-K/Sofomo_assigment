@@ -19,9 +19,9 @@ def read_geolocations(db: Session = Depends(get_db)):
 
 @router.get("/geolocation", response_model=GeolocationDto)
 def find_geolocation_by_ip_or_url(
-    ip: maybe_string = None, url: maybe_string = None, db: Session = Depends(get_db)
+        ip: maybe_string = None, url: maybe_string = None, db: Session = Depends(get_db)
 ):
-    if (ip and url) or (ip and url) == False:
+    if (ip and url) or not (ip or url):
         raise HTTPException(**HTTP_EXCEPTIONS[460])
 
     return find_one_by_ip(db, ip) if ip else find_one_by_url(db, url)
@@ -29,8 +29,8 @@ def find_geolocation_by_ip_or_url(
 
 @router.post("/geolocations", response_model=GeolocationDto, status_code=201)
 def create_geolocation(
-    request_body: CreateGeolocationDto,
-    db: Session = Depends(get_db),
-    settings: Settings = Depends(get_settings),
+        request_body: CreateGeolocationDto,
+        db: Session = Depends(get_db),
+        settings: Settings = Depends(get_settings),
 ):
     return create(request_body, db, settings)
