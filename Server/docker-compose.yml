@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+
+  web:
+    build: ./src
+    command: uvicorn api.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    volumes:
+      - ./src:/usr/src/api
+    ports:
+      - 8004:8000
+
+    environment:
+      - ENVIRONMENT=dev
+      - TESTING=0
+      - DATABASE_URL=postgresql://postgres:postgres@web-db:5432/web_dev
+      - DATABASE_TEST_URL=postgresql://postgres:postgres@web-db:5432/web_test
+      - IP_API_KEY=a64e0edb32a77f0df31dcec27d26121f
+      - SECRET=Sofomo_Secret
+      - ALGO=HS256
+
+    depends_on:   
+      - web-db
+
+  web-db:
+    build:
+      context: ./src/db
+      dockerfile: Dockerfile
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
